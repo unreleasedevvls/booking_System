@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Бронювання номера</title>
+</head>
+<body>
+    <h1>Бронювання номера</h1>
+    <a href="/rooms/">← До номерів</a>
+    
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        
+        <h3>Ваші дані:</h3>
+        <input type="text" name="name" placeholder="Ім'я" required><br>
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="tel" name="phone" placeholder="Телефон" required><br>
+        
+        <h3>Дати проживання:</h3>
+        <input type="date" name="check_in" required> Заїзд<br>
+        <input type="date" name="check_out" required> Виїзд<br>
+        
+        <h3>Оберіть номер:</h3>
+        <select name="room_id" required>
+            {% for room in rooms %}
+                <option value="{{ room.id }}">
+                    №{{ room.number }} - {{ room.type }} ({{ room.price }}грн)
+                </option>
+            {% endfor %}
+        </select>
+        
+        <br><br>
+        <button type="submit">Забронювати</button>
+    </form>
+</body>
+</html>

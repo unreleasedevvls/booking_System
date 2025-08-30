@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Номери готелю</title>
+</head>
+<body>
+    <h1>rooms</h1>
+    <a href="/">← На головну</a>
+    
+    {% for room in rooms %}
+    <div style="border: 2px solid blue; padding: 15px; margin: 10px;">
+        <h2>№{{ room.number }} - {{ room.type }}</h2>
+        <p>Ціна: {{ room.price }} грн/ніч</p>
+        <p>Вміщує: {{ room.capacity }} гостей</p>
+        <p>Статус: {% if room.is_available %}Доступний{% else %}Заброньовано{% endif %}</p>
+        <a href="/book/">Забронювати цей номер</a>
+    </div>
+    {% endfor %}
+</body>
+</html>

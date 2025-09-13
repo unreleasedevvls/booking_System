@@ -1,15 +1,241 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Готель - Головна</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отель - Главная</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: white;
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            color: #7f8c8d;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .stat-number {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        /* Rooms grid */
+        .rooms-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Room card */
+        .room-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .room-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+
+        .room-info p {
+            margin-bottom: 5px;
+            color: #6c757d;
+        }
+
+        .price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 12px 0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 8px 0;
+            font-size: 0.9em;
+        }
+
+        .available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .booked {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Button */
+        .book-btn {
+            background: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .book-btn:hover {
+            background: #218838;
+        }
+
+        .book-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        /* Admin section */
+        .admin-section {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .admin-btn {
+            display: inline-block;
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .admin-btn:hover {
+            background: #5a6268;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+    </style>
 </head>
 <body>
-    <h1>hotel</h1>
-    <nav>
-        <a href="/">Головна</a>
-        <a href="/rooms/">Номери</a>
-        <a href="/book/">Бронювання</a>
-        <a href="/admin/">Адмінка</a>
-    </nav>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Гостиница</h1>
+            <p>Комфортабельные номера для вашего отдыха</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">{{ rooms|length }}</div>
+                    <div class="stat-label">Номеров</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">{{ available_rooms }}</div>
+                    <div class="stat-label">Доступно</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rooms Grid -->
+        <div class="rooms-container">
+            {% for room in rooms %}
+            <div class="room-card">
+                <h3>Номер {{ room.number }}</h3>
+                
+                <div class="room-info">
+                    <p><strong>Тип:</strong> {{ room.type }}</p>
+                    <p><strong>Мест:</strong> {{ room.capacity }}</p>
+                </div>
+                
+                <div class="price">{{ room.price }}/ ночь</div>
+                
+                <div class="status {% if room.is_available %}available{% else %}booked{% endif %}">
+                    {% if room.is_available %}Доступен{% else %}Занят{% endif %}
+                </div>
+
+                {% if room.is_available %}
+                <form action="{% url 'book_room' %}" method="get">
+                    <input type="hidden" name="room_id" value="{{ room.id }}">
+                    <button type="submit" class="book-btn">
+                        Забронировать
+                    </button>
+                </form>
+                {% else %}
+                <button class="book-btn" disabled>
+                    Недоступно
+                </button>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Admin Section -->
+        <div class="admin-section">
+            <a href="/admin/" class="admin-btn">
+                Панель администратора
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2024 Гостиница. Телефон: 666</p>
+        </div>
+    </div>
 </body>
 </html>

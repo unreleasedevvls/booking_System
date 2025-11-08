@@ -1,154 +1,196 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Бронювання номера - HOTEL.SYSTEM</title>
+    <title>Бронирование</title>
     <style>
+        /* Тот же базовый стиль */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background: #fff;
+            line-height: 1.6;
         }
-        
-        /* Заголовок */
-        .header {
-            background-color: #2c3e50;
+
+        .navbar {
+            background: #000;
             color: white;
-            padding: 25px;
-            text-align: center;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
         }
-        
-        .header h1 {
-            font-size: 2em;
+
+        .nav-left {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-left a {
+            color: white;
+            text-decoration: none;
             font-weight: bold;
+            transition: color 0.3s;
         }
-        
-        /* Ссылка назад */
-        .back-link {
+
+        .nav-left a:hover {
+            color: #1abc9c;
+        }
+
+        .nav-right a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .content-section {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
-        
-        .back-link a {
-            color: #3498db;
-            text-decoration: none;
-            font-size: 1.1em;
-            padding: 10px;
-            display: inline-block;
-        }
-        
-        .back-link a:hover {
-            color: #2980b9;
-        }
-        
-        /* Форма */
-        .booking-form {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .form-section {
-            margin-bottom: 25px;
-        }
-        
-        .form-section h3 {
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
             color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
         }
-        
-        input, select {
+
+        .form-control {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             font-size: 1em;
         }
-        
-        input:focus, select:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-        
-        button {
-            background-color: #e74c3c;
+
+        .btn {
+            display: block;
+            background: #28a745;
             color: white;
-            padding: 15px 30px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 1.1em;
             width: 100%;
-            margin-top: 20px;
-            transition: background-color 0.3s;
+            transition: background 0.3s ease;
         }
-        
-        button:hover {
-            background-color: #c0392b;
+
+        .btn:hover {
+            background: #218838;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 10px;
+            margin-top: 50px;
+            color: #6c757d;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
         }
     </style>
 </head>
 <body>
-    <!-- Заголовок -->
-    <div class="header">
-        <h1>бронирование номера</h1>
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'home' %}">🏠 Главная</a>
+            <a href="{% url 'rooms' %}">Номера</a>
+            <a href="{% url 'contacts' %}">Контакты</a>
+        </div>
+        <div class="nav-right">
+            Привет, {{ request.user.username }} |
+            <a href="{% url 'logout' %}">Выйти</a>
+        </div>
     </div>
 
-    <!-- Ссылка назад -->
-    <div class="back-link">
-        <a href="/">← На главную</a>
-    </div>
+    <section class="hero">
+        <h1>Бронирование номера</h1>
+        <p>Заполните форму для бронирования</p>
+    </section>
 
-    <!-- Форма бронирования -->
-    <div class="booking-form">
-        <form method="post">
-            {% csrf_token %}
-            
-            <div class="form-section">
-                <h3>Ваши данные:</h3>
-                <input type="text" name="name" placeholder="Ім'я" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="tel" name="phone" placeholder="Телефон" required>
-            </div>
-            
-            <div class="form-section">
-                <h3>Даты проживанния:</h3>
-                <input type="date" name="check_in" required>
-                <span>Заезд</span><br>
-                <input type="date" name="check_out" required>
-                <span>Выезд</span>
-            </div>
-            
-            <div class="form-section">
-                <h3>выберите номер:</h3>
-                <select name="room_id" required>
-                    {% for room in rooms %}
-                        <option value="{{ room.id }}">
-                            №{{ room.number }} - {{ room.type }} ({{ room.price }}грн/ночь)
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <button type="submit">Забронировать</button>
-        </form>
+    <section class="content-section">
+        <div class="card">
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Ваше имя</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="room_id">Выберите номер</label>
+                    <select id="room_id" name="room_id" class="form-control" required>
+                        <option value="">-- Выберите номер --</option>
+                        {% for room in rooms %}
+                        <option value="{{ room.id }}">Номер {{ room.number }} ({{ room.type }}) - {{ room.price }}₴</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="check_in">Дата заезда</label>
+                    <input type="date" id="check_in" name="check_in" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="check_out">Дата выезда</label>
+                    <input type="date" id="check_out" name="check_out" class="form-control" required>
+                </div>
+                <button type="submit" class="btn">Забронировать</button>
+            </form>
+        </div>
+    </section>
+
+    <div class="footer">
+        © 2025 Гостиница. Все права защищены.
     </div>
 </body>
 </html>

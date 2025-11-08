@@ -68,9 +68,13 @@ DATABASES = {
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    'OPTIONS':{
+        'min_length':5,
+        }
+    },
+    
+
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
@@ -82,12 +86,21 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]  # твои статики (картинки, css, js)
-STATIC_ROOT = BASE_DIR / "staticfiles"    # сюда collectstatic будет собирать файлы при деплое
+STATICFILES_DIRS = [BASE_DIR / "static"]  # статики
+STATIC_ROOT = BASE_DIR / "staticfiles"    # статик
 
-# Media (загружаемые фото через админку)
+# для фоток
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / "media"
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# аутентификация
+LOGOUT_REDIRECT_URL = '/accounts/signup/'          
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = '/home/'
+
+
+#печенье
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7 # 1 недельку будет сессия сохраняться
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False

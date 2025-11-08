@@ -4,64 +4,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Успешное бронирование - HOTEL.SYSTEM</title>
+    <title>Успешное бронирование</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Тот же базовый стиль */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            padding: 20px;
-            text-align: center;
-        }
-        .header {
-            background-color: #27ae60;
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .header h1 { font-size: 2em; font-weight: bold; }
-        .message {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            max-width: 600px;
-            margin: 0 auto 30px;
-            border-left: 5px solid #27ae60;
-            font-size: 1.1em;
-            color: #555;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background: #fff;
             line-height: 1.6;
         }
+
+        .navbar {
+            background: #000;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-left a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-left a:hover {
+            color: #1abc9c;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .content-section {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .success-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
         .btn {
             display: inline-block;
+            background: #28a745;
+            color: white;
             padding: 12px 30px;
-            border-radius: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
             font-weight: bold;
-            font-size: 1.1em;
             text-decoration: none;
-            transition: background-color 0.3s;
-            margin: 5px;
+            transition: background 0.3s ease;
+            margin: 10px;
         }
-        .btn-primary { background-color: #3498db; color: white; }
-        .btn-primary:hover { background-color: #2980b9; }
-        .btn-secondary { background-color: #95a5a6; color: white; }
-        .btn-secondary:hover { background-color: #7f8c8d; }
+
+        .btn:hover {
+            background: #218838;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 10px;
+            margin-top: 50px;
+            color: #6c757d;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h1>Вітаємо! Бронювання успішне!</h1>
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'home' %}">🏠 Главная</a>
+            <a href="{% url 'rooms' %}">Номера</a>
+        </div>
     </div>
 
-    <div class="message">
-        <p>✅ Ваш номер заброньовано успішно!</p>
-        <p>Очікуємо вас у готелі!</p>
-        <p>Дякуємо, що обрали наш готель 🏨</p>
-    </div>
+    <section class="hero">
+        <h1>Бронирование успешно!</h1>
+        <p>Ваш номер забронирован</p>
+    </section>
 
-    <a href="/" class="btn btn-primary">На головну</a>
-    <a href="/book/" class="btn btn-secondary">Забронювати ще</a>
+    <section class="content-section">
+        <div class="success-card">
+            <div class="success-icon">✅</div>
+            <h2>Спасибо за бронирование!</h2>
+            <p>Ваш номер успешно забронирован. Мы ждём вас в указанные даты.</p>
+            <p>В ближайшее время с вами свяжется наш менеджер для подтверждения.</p>
+            <div style="margin-top: 30px;">
+                <a href="{% url 'home' %}" class="btn">На главную</a>
+                <a href="{% url 'rooms' %}" class="btn">Забронировать ещё</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        © 2025 Гостиница. Все права защищены.
+    </div>
 </body>
 </html>

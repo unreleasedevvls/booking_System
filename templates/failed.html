@@ -4,63 +4,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ошибка бронирования - HOTEL.SYSTEM</title>
+    <title>Ошибка бронирования</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Тот же базовый стиль */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            padding: 20px;
-            text-align: center;
-        }
-        .header {
-            background-color: #e74c3c;
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .header h1 { font-size: 2em; font-weight: bold; }
-        .message {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            max-width: 600px;
-            margin: 0 auto 30px;
-            border-left: 5px solid #e74c3c;
-            font-size: 1.1em;
-            color: #555;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background: #fff;
             line-height: 1.6;
         }
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1.1em;
-            text-decoration: none;
-            transition: background-color 0.3s;
+
+        .navbar {
+            background: #000;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
         }
-        .btn-primary {
-            background-color: #3498db;
+
+        .nav-left {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-left a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-left a:hover {
+            color: #1abc9c;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(to right, #e74c3c, #c0392b);
             color: white;
         }
-        .btn-primary:hover { background-color: #2980b9; }
+
+        .hero h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .content-section {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .error-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+
+        .error-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background: #218838;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 10px;
+            margin-top: 50px;
+            color: #6c757d;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+        }
     </style>
 </head>
 <body>
-    <div class="header">
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'home' %}">🏠 Главная</a>
+            <a href="{% url 'rooms' %}">Номера</a>
+        </div>
+    </div>
+
+    <section class="hero">
         <h1>Ошибка бронирования</h1>
-    </div>
+        <p>Что-то пошло не так</p>
+    </section>
 
-    <div class="message">
-        <p>Ошибка в датах бронирования.</p>
-        <p>Дата выезда должна быть позже даты заезда, либо вы ввели дату заезда на прошедший день.</p>
-        <p>Пожалуйста, проверьте введенные даты.</p>
-    </div>
+    <section class="content-section">
+        <div class="error-card">
+            <div class="error-icon">❌</div>
+            <h2>Произошла ошибка</h2>
+            <p>К сожалению, не удалось завершить бронирование. Это могло произойти по следующим причинам:</p>
+            <ul style="text-align: left; margin: 20px 0;">
+                <li>Номер уже забронирован на эти даты</li>
+                <li>Неверно указаны даты (прошедшие даты или дата выезда раньше заезда)</li>
+                <li>Техническая ошибка</li>
+            </ul>
+            <p>Пожалуйста, попробуйте ещё раз или свяжитесь с нами.</p>
+            <div style="margin-top: 30px;">
+                <a href="{% url 'book_room' %}" class="btn">Попробовать снова</a>
+                <a href="{% url 'contacts' %}" class="btn">Связаться с нами</a>
+            </div>
+        </div>
+    </section>
 
-    <a href="/book/" class="btn btn-primary">Попробовать снова</a>
+    <div class="footer">
+        © 2025 Гостиница. Все права защищены.
+    </div>
 </body>
 </html>

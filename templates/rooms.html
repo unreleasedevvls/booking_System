@@ -1,0 +1,285 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гостиница — Номера</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            background: #fff;
+            line-height: 1.6;
+        }
+
+        /* Навигация (чёрный топ-бар) */
+        .navbar {
+            background: #000;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .nav-left {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-left a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .nav-left a:hover {
+            color: #1abc9c;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-right a {
+            color: white;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        .nav-right a:hover {
+            color: #1abc9c;
+        }
+
+        .admin-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .admin-btn:hover {
+            background: #c0392b;
+            color: white;
+        }
+
+        /* Заголовок страницы */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(to right, #3498db, #2ecc71);
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.1em;
+        }
+
+        /* Контейнер с номерами */
+        .rooms-container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* Карточка номера */
+        .room-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .room-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+
+        .room-content {
+            padding: 25px;
+        }
+
+        .room-content h3 {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .room-info p {
+            margin-bottom: 8px;
+            color: #6c757d;
+        }
+
+        .price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-align: center;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .available {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .booked {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .book-btn {
+            display: block;
+            background: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+            font-size: 1em;
+        }
+
+        .book-btn:hover {
+            background: #218838;
+        }
+
+        .book-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 10px;
+            margin-top: 50px;
+            color: #6c757d;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-left {
+                gap: 15px;
+            }
+            
+            .nav-right {
+                gap: 10px;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навбар -->
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'home' %}">🏠 Главная</a>
+            <a href="{% url 'rooms' %}">Номера</a>
+            <a href="{% url 'contacts' %}">Контакты</a>
+        </div>
+        <div class="nav-right">
+            {% if request.user.is_authenticated %}
+                {% if request.user.is_staff or request.user.is_superuser %}
+                <a href="/admin/" class="admin-btn">🔧 Админка</a>
+                {% endif %}
+                Привет, {{ request.user.username }} |
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Герой -->
+    <section class="hero">
+        <h1>Наши номера</h1>
+        <p>Выберите подходящий вариант и забронируйте прямо сейчас</p>
+    </section>
+
+    <!-- Список номеров -->
+    <div class="rooms-container">
+        {% for room in rooms %}
+        <div class="room-card">
+            <div class="room-content">
+                <h3>Номер {{ room.number }}</h3>
+                <div class="room-info">
+                    <p><strong>Тип:</strong> {{ room.type }}</p>
+                    <p><strong>Вместимость:</strong> {{ room.capacity }} чел.</p>
+                    <p><strong>Описание:</strong> {{ room.description|default:"Комфортный номер со всеми удобствами" }}</p>
+                </div>
+                <div class="price">{{ room.price }}₴ / ночь</div>
+                <div class="status {% if room.is_available %}available{% else %}booked{% endif %}">
+                    {% if room.is_available %}Доступен{% else %}Занят{% endif %}
+                </div>
+
+                {% if room.is_available %}
+                <form action="{% url 'book_room' %}" method="get">
+                    <input type="hidden" name="room_id" value="{{ room.id }}">
+                    <button type="submit" class="book-btn">Забронировать</button>
+                </form>
+                {% else %}
+                <button class="book-btn" disabled>Недоступно</button>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align:center; color:#7f8c8d; grid-column: 1 / -1;">Нет доступных номеров</p>
+        {% endfor %}
+    </div>
+
+    <!-- Подвал -->
+    <div class="footer">
+        © 2025 Гостиница. Все права защищены.
+    </div>
+</body>
+</html>
